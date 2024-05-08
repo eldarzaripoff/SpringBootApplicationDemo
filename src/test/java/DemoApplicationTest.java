@@ -1,6 +1,6 @@
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -24,11 +24,20 @@ public class DemoApplicationTest {
     }
 
     @Test
-    public void contextLoads() {
+    public void devContextLoads() {
         int devappPort = devapp.getMappedPort(8080);
-        int prodappPort = prodapp.getMappedPort(8080);
-        ResponseEntity<String> forEntity = restTemplate.getForEntity("http://localhost:" + devappPort + "/profile", String.class);
-        System.out.println(forEntity.getBody());
+        ResponseEntity<String> forEntityDev = restTemplate.getForEntity("http://localhost:" + devappPort + "/profile", String.class);
+        System.out.println(forEntityDev.getBody());
+        Assertions.assertEquals("Current profile is dev", forEntityDev.getBody());
+
+    }
+
+    @Test
+    public void prodContextLoads() {
+        int prodappPort = prodapp.getMappedPort(8081);
+        ResponseEntity<String> forEntityProd = restTemplate.getForEntity("http://localhost:" + prodappPort + "/profile", String.class);
+        System.out.println(forEntityProd.getBody());
+        Assertions.assertEquals("Current profile is production", forEntityProd.getBody());
     }
 
 }
