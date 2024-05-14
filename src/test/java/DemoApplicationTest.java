@@ -7,21 +7,24 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.GenericContainer;
-
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.netology.SpringBootDemoApplication;
+@Testcontainers
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = SpringBootDemoApplication.class)
 public class DemoApplicationTest {
     @Autowired
-    TestRestTemplate restTemplate;
-    private GenericContainer<?> devapp;
-    private GenericContainer<?> prodapp;
+    private TestRestTemplate restTemplate;
+    @Container
+    private final GenericContainer<?> devapp = new GenericContainer<>("devapp:latest").withExposedPorts(8080);
+    @Container
+    private final GenericContainer<?> prodapp = new GenericContainer<>("prodapp:latest").withExposedPorts(8080);
 
-    @BeforeEach
-    void setUp() {
-        devapp = new GenericContainer<>("devapp").withExposedPorts(8080);
-        prodapp = new GenericContainer<>("prodapp").withExposedPorts(8080);
-        devapp.start();
-        prodapp.start();
-    }
+//    @BeforeEach
+//    void setUp() {
+//        devapp.start();
+//        prodapp.start();
+//    }
 
     @Test
     public void devContextLoads() {
