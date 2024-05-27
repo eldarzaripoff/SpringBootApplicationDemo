@@ -18,7 +18,7 @@ public class DemoApplicationTest {
     @Container
     private final GenericContainer<?> devapp = new GenericContainer<>("devapp:latest").withExposedPorts(8080);
     @Container
-    private final GenericContainer<?> prodapp = new GenericContainer<>("prodapp:latest").withExposedPorts(8080);
+    private final GenericContainer<?> prodapp = new GenericContainer<>("prodapp:latest").withExposedPorts(8081);
 
 //    @BeforeEach
 //    void setUp() {
